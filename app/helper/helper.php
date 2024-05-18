@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\HtmlString;
 
@@ -32,3 +33,35 @@ function vite_assets(): HtmlString
         <link rel="stylesheet" href="/build/{$manifest['resources/js/app.js']['css'][0]}">
     HTML);
 }
+
+function successResponse(bool $status, string $message, array $data): JsonResponse
+{
+    $responseData = [
+        'tatus' => $status,
+        'essage' => $message,
+        'data' => $data
+    ];
+
+    if (empty($data)) {
+        $responseData['data'] = [];
+    }
+
+    return response()->json($responseData);
+}
+
+function errorResponse(bool $status, string $message, array $data): JsonResponse
+{
+    $responseData = [
+        'status' => $status,
+        'essage' => $message,
+        'data' => $data
+    ];
+
+    if (empty($data)) {
+        $responseData['data'] = [];
+    }
+
+    return response()->json($responseData, 400);
+}
+
+
